@@ -2,12 +2,9 @@ const config = require("./config"),
   credentials = require("./config/credentials"),
   { Pool } = require("pg");
 
-async function saveToken(pool, token, auid) {
-  await pool.query(
-    "INSERT INTO tokens(token, auid, created) VALUES($1, $2, NOW())",
-    [token, auid]
-  );
-}
+const client = new pg.Client({
+  /* conn config */
+});
 
 // Helper: Get token by auid, only if created within 2 minutes
 async function getTokenByAuid(pool, auid) {
@@ -33,6 +30,22 @@ module.exports = {
       ...credentials.pg,
       ...config.pg,
     });
+
+    pool
+      .query(
+        `
+      CREATE TABLE IF NOT EXISTS tokens (
+        id SERIAL PRIMARY KEY,
+        token TEXT NOT NULL,
+        auid TEXT NOT NULL,
+        created TIMESTAMP NOT NULL DEFAULT NOW()
+      )
+    `
+      )
+      .catch((err) => {
+        console.error("Error creating tokens table:", err);
+      });
+
     return {
       saveToken: async (token, auid) => {
         return await saveToken(pool, token, auid);
