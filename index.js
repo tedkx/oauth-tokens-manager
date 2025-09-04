@@ -98,5 +98,5 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`OAuth2 landing page listening on port ${PORT}`);
+  console.log(`OAuth2 landing page listening on 0.0.0.0:${PORT}`);
 });
