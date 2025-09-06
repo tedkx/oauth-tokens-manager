@@ -2,7 +2,13 @@ const config = require("./config"),
   credentials = require("./config/credentials"),
   { Pool } = require("pg");
 
-// Helper: Get token by auid, only if created within 2 minutes
+async function saveToken(pool, token, auid) {
+  await pool.query(
+    "INSERT INTO tokens(token, auid, created) VALUES($1, $2, NOW())",
+    [token, auid]
+  );
+}
+
 async function getTokenByAuid(pool, auid) {
   const res = await pool.query(
     `SELECT token FROM tokens 
