@@ -69,6 +69,11 @@ app.get("/", async (req, res) => {
                     <h3>OAuth2 Success</h3>
                     <p>${token}</p>
                 </div>
+
+                <script type="text/javascript">
+                    if (window.self !== window.top) 
+                        window.parent.postMessage({ type: "OAUTH_TOKEN", data: { access_token: "${token}" } }, "*");
+                </script>
             </body>
         </html>
     `);

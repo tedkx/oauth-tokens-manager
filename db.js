@@ -2,10 +2,6 @@ const config = require("./config"),
   credentials = require("./config/credentials"),
   { Pool } = require("pg");
 
-const client = new pg.Client({
-  /* conn config */
-});
-
 // Helper: Get token by auid, only if created within 2 minutes
 async function getTokenByAuid(pool, auid) {
   const res = await pool.query(
